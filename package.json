@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --mode development",
+    "start": "webpack-dev-server --open --mode development --env.ENVIRONMENT=local",
+    "dev": "webpack-dev-server --open --mode development --env.ENVIRONMENT=development",
     "build": "webpack --mode production"
   },
   "keywords": [],
@@ -21,6 +22,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^4.2.2",
+    "dotenv": "^8.2.0",
     "file-loader": "^6.0.0",
     "html-loader": "^1.3.0",
     "html-webpack-plugin": "^4.3.0",
