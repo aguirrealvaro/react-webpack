@@ -3,6 +3,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const dotenv = require("dotenv");
 
+const srcPath = path.resolve(__dirname, "src");
 const currentPath = path.join(__dirname);
 
 const validEnvs = ["local", "development", "production"];
@@ -28,7 +29,7 @@ module.exports = (env = {}) => {
   }, {});
 
   return {
-    mode: env.environment === 'production' ? 'production' : 'development',
+    mode: env.environment === "production" ? "production" : "development",
     entry: "./src/index.js",
     output: {
       path: path.resolve(currentPath, "dist"),
@@ -37,10 +38,13 @@ module.exports = (env = {}) => {
     },
     devServer: {
       historyApiFallback: true,
-      open: true
+      open: true,
     },
     resolve: {
       extensions: ["*", ".js", ".jsx", ".json"],
+      alias: {
+        "@": srcPath,
+      },
     },
     module: {
       rules: [
