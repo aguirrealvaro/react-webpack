@@ -4,7 +4,6 @@ const webpack = require("webpack");
 const dotenv = require("dotenv");
 
 const currentPath = path.join(__dirname);
-const srcPath = path.resolve(currentPath, "src");
 
 const validEnvs = ["local", "development", "production"];
 
@@ -30,8 +29,7 @@ module.exports = (env = {}) => {
 
   return {
     mode: env.environment === 'production' ? 'production' : 'development',
-    context: srcPath,
-    entry: path.resolve(srcPath, "./index.js"),
+    entry: "./src/index.js",
     output: {
       path: path.resolve(currentPath, "dist"),
       filename: "bundle.js",
