@@ -3,8 +3,8 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const dotenv = require("dotenv");
 
-const srcPath = path.resolve(__dirname, "src");
 const currentPath = path.join(__dirname);
+const srcPath = path.resolve(__dirname, "src");
 
 const validEnvs = ["local", "development", "production"];
 
@@ -30,6 +30,7 @@ module.exports = (env = {}) => {
 
   return {
     mode: env.environment === "production" ? "production" : "development",
+    context: currentPath,
     entry: "./src/index.js",
     output: {
       path: path.resolve(currentPath, "dist"),
