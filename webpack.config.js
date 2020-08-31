@@ -6,23 +6,30 @@ const dotenv = require("dotenv");
 const currentPath = path.join(__dirname);
 const srcPath = path.resolve(currentPath, "src");
 
-module.exports = (env) => {
-  const envPath = path.resolve(currentPath, env.ENVIRONMENT);
+const validEnvs = ["local", "development", "production"];
 
+module.exports = (env = {}) => {
+  if (!env.environment) {
+    throw Error("The --env.environment argument is not defined.");
+  }
+
+  if (!validEnvs.includes(env.environment)) {
+    throw Error(
+      `Invalid --env.environment argument, please use one of the following: ${validEnvs}`
+    );
+  }
+
+  const envPath = path.resolve(currentPath, "env", env.environment);
   const finalPath = `${envPath}.env`;
-
   const fileEnv = dotenv.config({ path: finalPath }).parsed;
 
   const envKeys = Object.keys(fileEnv).reduce((prev, next) => {
-    prev[`process.env.${next}`] = JSON.stringify(env[next]);
+    prev[`process.env.${next}`] = JSON.stringify(fileEnv[next]);
     return prev;
   }, {});
 
-  console.log("***");
-  console.log(finalPath);
-  console.log("***");
-
   return {
+    mode: env.environment === 'production' ? 'production' : 'development',
     context: srcPath,
     entry: path.resolve(srcPath, "./index.js"),
     output: {
@@ -32,6 +39,7 @@ module.exports = (env) => {
     },
     devServer: {
       historyApiFallback: true,
+      open: true
     },
     resolve: {
       extensions: ["*", ".js", ".jsx", ".json"],

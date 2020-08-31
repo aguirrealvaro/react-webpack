@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --mode development --env.ENVIRONMENT=local",
-    "dev": "webpack-dev-server --open --mode development --env.ENVIRONMENT=development",
+    "start": "webpack-dev-server --env.environment=local",
+    "dev": "webpack-dev-server --env.environment=development",
     "build": "webpack --mode production"
   },
   "keywords": [],
