@@ -3,6 +3,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const dotenv = require("dotenv");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const MiniCSSExtract = require("mini-css-extract-plugin");
 const { merge } = require("webpack-merge");
 
 const currentPath = path.join(__dirname);
@@ -61,7 +62,7 @@ module.exports = (env = {}) => {
         {
           test: /\.css$/,
           exclude: /node_modules/,
-          use: ["style-loader", "css-loader"],
+          use: [MiniCSSExtract.loader, "css-loader"],
         },
         {
           test: /\.(png|j?g|svg|gif)?$/,
@@ -75,6 +76,7 @@ module.exports = (env = {}) => {
         filename: "./index.html",
       }),
       new webpack.DefinePlugin(envKeys),
+      new MiniCSSExtract(),
     ],
   };
 
