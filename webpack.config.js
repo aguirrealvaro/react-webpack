@@ -2,6 +2,8 @@ const path = require("path");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const dotenv = require("dotenv");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const { merge } = require("webpack-merge");
 
 const currentPath = path.join(__dirname);
 const srcPath = path.resolve(__dirname, "src");
@@ -28,7 +30,7 @@ module.exports = (env = {}) => {
     return prev;
   }, {});
 
-  return {
+  const commonConfig = {
     mode: env.environment === "production" ? "production" : "development",
     context: currentPath,
     entry: {
@@ -38,10 +40,6 @@ module.exports = (env = {}) => {
       path: path.resolve(currentPath, "dist"),
       filename: "bundle.js",
       publicPath: "/",
-    },
-    devServer: {
-      historyApiFallback: true,
-      open: true,
     },
     resolve: {
       extensions: ["*", ".js", ".jsx", ".json"],
@@ -54,7 +52,7 @@ module.exports = (env = {}) => {
         {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
-          use: "babel-loader"
+          use: "babel-loader",
         },
         {
           test: /\.html$/,
@@ -79,4 +77,23 @@ module.exports = (env = {}) => {
       new webpack.DefinePlugin(envKeys),
     ],
   };
+
+  const devConfig = {
+    devServer: {
+      historyApiFallback: true,
+      open: true,
+    },
+  };
+
+  const prodConfig = {
+    plugins: [new OptimizeCssAssetsPlugin()],
+  };
+
+  const configs = {
+    local: devConfig,
+    devevelopment: devConfig,
+    production: prodConfig,
+  };
+
+  return merge(commonConfig, configs[env.environment]);
 };
