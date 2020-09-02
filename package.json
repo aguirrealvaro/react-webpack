@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --env.environment=local",
-    "dev": "webpack-dev-server --env.environment=development",
+    "start": "webpack-dev-server --color --env.environment=local",
+    "dev": "webpack-dev-server --color --env.environment=development",
     "build": "webpack --env.environment=production",
     "format": "prettier --write \"src/**/*.+(js|jsx)\""
   },
