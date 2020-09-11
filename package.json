@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --color --env.environment=local",
     "dev": "webpack-dev-server --color --env.environment=development",
-    "build": "webpack --env.environment=production",
+    "build:stage": "webpack --color --env.environment=stage",
+    "build": "webpack --color --env.environment=production",
     "format": "prettier --write \"src/**/*.+(js|jsx)\""
   },
   "keywords": [],

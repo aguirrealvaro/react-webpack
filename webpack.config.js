@@ -5,11 +5,12 @@ const dotenv = require("dotenv");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCSSExtract = require("mini-css-extract-plugin");
 const { merge } = require("webpack-merge");
+const PACKAGE = require("./package.json");
 
 const currentPath = path.join(__dirname);
 const srcPath = path.resolve(__dirname, "src");
 
-const validEnvs = ["local", "development", "production"];
+const validEnvs = ["local", "development", "stage", "production"];
 
 module.exports = (env = {}) => {
   if (!env.environment) {
@@ -31,8 +32,13 @@ module.exports = (env = {}) => {
     return prev;
   }, {});
 
+  const isLocal =
+    env.environment === "local" || env.environment === "development";
+
+  const mode = isLocal ? "development" : "production";
+
   const commonConfig = {
-    mode: env.environment === "production" ? "production" : "development",
+    mode,
     context: currentPath,
     entry: {
       app: ["@babel/polyfill", "./src/index.js"],
@@ -75,7 +81,13 @@ module.exports = (env = {}) => {
         template: path.resolve(__dirname, "public/index.html"),
         filename: "./index.html",
       }),
-      new webpack.DefinePlugin(envKeys),
+      new webpack.DefinePlugin({
+        ...envKeys,
+        "process.env": {
+          NODE_ENV: JSON.stringify(mode),
+          VERSION: JSON.stringify(PACKAGE.version),
+        },
+      }),
       new MiniCSSExtract(),
     ],
   };
@@ -88,13 +100,20 @@ module.exports = (env = {}) => {
     },
   };
 
+  const stageConfig = {
+    optimization: {
+      minimize: false,
+    },
+  };
+
   const prodConfig = {
     plugins: [new OptimizeCssAssetsPlugin()],
   };
 
   const configs = {
     local: devConfig,
-    devevelopment: devConfig,
+    development: devConfig,
+    stage: stageConfig,
     production: prodConfig,
   };
 
