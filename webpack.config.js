@@ -10,7 +10,7 @@ const PACKAGE = require("./package.json");
 const currentPath = path.join(__dirname);
 const srcPath = path.resolve(__dirname, "src");
 
-const validEnvs = ["local", "development", "stage", "production"];
+const validEnvs = ["local", "development", "production"];
 
 module.exports = (env = {}) => {
   if (!env.environment) {
@@ -32,8 +32,7 @@ module.exports = (env = {}) => {
     return prev;
   }, {});
 
-  const isLocal =
-    env.environment === "local" || env.environment === "development";
+  const isLocal = env.environment === "local";
 
   const mode = isLocal ? "development" : "production";
 
@@ -92,7 +91,7 @@ module.exports = (env = {}) => {
     ],
   };
 
-  const devConfig = {
+  const localConfig = {
     devServer: {
       historyApiFallback: true,
       open: true,
@@ -100,7 +99,7 @@ module.exports = (env = {}) => {
     },
   };
 
-  const stageConfig = {
+  const devConfig = {
     optimization: {
       minimize: false,
     },
@@ -111,9 +110,8 @@ module.exports = (env = {}) => {
   };
 
   const configs = {
-    local: devConfig,
+    local: localConfig,
     development: devConfig,
-    stage: stageConfig,
     production: prodConfig,
   };
 
