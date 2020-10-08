@@ -33,8 +33,11 @@ module.exports = (env = {}) => {
   }, {});
 
   const isLocal = env.environment === "local";
-
   const mode = isLocal ? "development" : "production";
+  
+  const devApiHost = dotenv.config({
+    path: path.resolve(currentPath, "env", "development.env"),
+  }).parsed.API_HOST;
 
   const commonConfig = {
     mode,
@@ -81,11 +84,14 @@ module.exports = (env = {}) => {
         filename: "./index.html",
       }),
       new webpack.DefinePlugin({
-        ...envKeys,
         "process.env": {
           NODE_ENV: JSON.stringify(mode),
           VERSION: JSON.stringify(PACKAGE.version),
+          ...(env["api-host"] === "dev" && {
+            API_HOST: JSON.stringify(devApiHost),
+          }),
         },
+        ...envKeys,
       }),
       new MiniCSSExtract(),
     ],
