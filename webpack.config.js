@@ -51,7 +51,7 @@ module.exports = (env = {}) => {
       publicPath: "/",
     },
     resolve: {
-      extensions: ["*", ".js", ".jsx", ".json"],
+      extensions: ["*", ".ts", ".tsx", ".js", ".jsx", ".json"],
       alias: {
         "@": srcPath,
       },
@@ -76,6 +76,11 @@ module.exports = (env = {}) => {
           test: /\.(png|j?g|svg|gif)?$/,
           use: "file-loader",
         },
+        {
+          test: /\.tsx?/,
+          exclude: /node_modules/,
+          use: 'ts-loader',
+      }
       ],
     },
     plugins: [
