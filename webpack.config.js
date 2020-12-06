@@ -34,7 +34,7 @@ module.exports = (env = {}) => {
 
   const isLocal = env.environment === "local";
   const mode = isLocal ? "development" : "production";
-  
+
   const devApiHost = dotenv.config({
     path: path.resolve(currentPath, "env", "development.env"),
   }).parsed.API_HOST;
