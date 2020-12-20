@@ -13,15 +13,13 @@ const srcPath = path.resolve(__dirname, "src");
 const validEnvs = ["local", "development", "production"];
 
 module.exports = (env = {}) => {
-  if (!env.environment) {
+  if (!env.environment)
     throw Error("The --env.environment argument is not defined.");
-  }
 
-  if (!validEnvs.includes(env.environment)) {
+  if (!validEnvs.includes(env.environment))
     throw Error(
       `Invalid --env.environment argument, please use one of the following: ${validEnvs}`
     );
-  }
 
   const envPath = path.resolve(currentPath, "env", env.environment);
   const finalPath = `${envPath}.env`;
@@ -43,7 +41,7 @@ module.exports = (env = {}) => {
     mode,
     context: currentPath,
     entry: {
-      app: ["@babel/polyfill", "./src/index.js"],
+      app: "./src/index.js",
     },
     output: {
       path: path.resolve(currentPath, "dist"),
@@ -79,8 +77,8 @@ module.exports = (env = {}) => {
         {
           test: /\.tsx?/,
           exclude: /node_modules/,
-          use: 'ts-loader',
-      }
+          use: "ts-loader",
+        },
       ],
     },
     plugins: [
